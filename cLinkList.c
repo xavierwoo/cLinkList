@@ -1,11 +1,28 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "cLinkList.h"
 
-struct CLink{
-	struct CLink *previous;
-	struct CLink *next;
-	void *data;
-};
+
+#ifdef DEBUG_CLINKLIST
+void CLinkList_printLink(struct CLinkList *list, void (*printFun)(void *data)){
+    struct CLink *pL = NULL;
+    unsigned int i = 0;
+    
+    if (list == NULL || list->length == 0) {
+        return;
+    }
+    
+    pL = list->head;
+    
+    while (pL != NULL) {
+        printf("NO.%u:\n ", i++);
+        printFun(pL->data);
+        printf("\n");
+        pL = pL->next;
+    }
+    
+}
+#endif
 
 struct CLinkList *CLinkList_newList(){
     struct CLinkList *newList = NULL;
@@ -55,4 +72,19 @@ int CLinkList_insertFront(struct CLinkList *list, void *data){
     }
     list->length++;
     return 0;
+}
+
+void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *data)){
+    struct CLink *pL = NULL;
+    struct CLink *pNL = NULL;
+    pL = list->head;
+    
+    while (pL != NULL) {
+        destruction(pL->data);
+        
+        pNL = pL->next;
+        free(pL);
+        pL = pNL;
+    }
+    free(list);
 }
