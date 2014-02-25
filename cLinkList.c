@@ -51,6 +51,34 @@ struct CLink *newLink(){
     return nL;
 }
 
+void CLinkList_delete(struct CLink *link, void (*destruction)(void *data)){
+    struct CLinkList *l = NULL;
+    
+    if (link == NULL) return;
+    
+    l = link->list;
+    
+    if (l->length == 1) {
+        l->head = NULL;
+        l->tail = NULL;
+    }
+    else if (l->head == link) {
+        l->head = link->next;
+        link->next->previous = NULL;
+    }
+    else if (l->tail == link) {
+        l->tail = link->previous;
+        link->previous->next = NULL;
+    }
+    else {
+        link->previous->next = link->next;
+        link->next->previous = link->previous;
+    }
+    
+    destruction(link->data);
+    free(link);
+}
+
 int CLinkList_insert(struct CLink *link, void *data){
     struct CLink *nL = NULL;
     struct CLinkList *l = NULL;

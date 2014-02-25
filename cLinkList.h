@@ -18,12 +18,15 @@ struct CLinkList{
 };
 
 struct CLinkList *CLinkList_newList();
+void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *data));
+
 
 int CLinkList_pushFront(struct CLinkList *list, void *data);
 int CLinkList_pushBack(struct CLinkList *list, void *data);
 int CLinkList_insert(struct CLink *link, void *data);
+void CLinkList_delete(struct CLink *link, void (*destruction)(void *data));
 
-void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *data));
+
 
 #ifdef DEBUG_CLINKLIST
 void CLinkList_printLink(struct CLinkList *list, void (*printFun)(void *data));
