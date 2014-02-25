@@ -18,6 +18,7 @@ struct CLinkList *CLinkList_newList();
 
 int CLinkList_pushFront(struct CLinkList *list, void *data);
 int CLinkList_pushBack(struct CLinkList *list, void *data);
+int CLinkList_insert(struct CLink *link, void *data);
 
 void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *data));
 
