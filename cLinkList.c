@@ -45,26 +45,48 @@ struct CLink *newLink(){
     
     nL->previous = NULL;
     nL->next = NULL;
+    nL->list = NULL;
     nL->data = NULL;
     
     return nL;
 }
 
-int CLinkList_insertFront(struct CLinkList *list, void *data){
+
+int CLinkList_pushBack(struct CLinkList *list, void *data){
     struct CLink *nL = NULL;
-    struct CLink *pL = NULL;
     
     nL = newLink();
     
     if (nL == NULL) return -1;
     
     nL->data = data;
+    nL->list = list;
+    if (list->length > 0) {
+        nL->previous = list->tail;
+        list->tail->next = nL;
+        list->tail = nL;
+    }
+    else {
+        list->head = nL;
+        list->tail = nL;
+    }
+    list->length++;
+    return 0;
+}
+
+int CLinkList_pushFront(struct CLinkList *list, void *data){
+    struct CLink *nL = NULL;
     
+    nL = newLink();
+    
+    if (nL == NULL) return -1;
+    
+    nL->data = data;
+    nL->list = list;
     if (list->length > 0) {
         nL->next = list->head;
-        pL = list->head;
+        list->head->previous = nL;
         list->head = nL;
-        pL->previous = nL;
     }
     else {
         list->head = nL;

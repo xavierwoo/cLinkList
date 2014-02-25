@@ -3,6 +3,7 @@
 struct CLink{
 	struct CLink *previous;
 	struct CLink *next;
+	struct CLinkList *list;
 	void *data;
 };
 
@@ -15,7 +16,8 @@ struct CLinkList{
 
 struct CLinkList *CLinkList_newList();
 
-int CLinkList_insertFront(struct CLinkList *list, void *data);
+int CLinkList_pushFront(struct CLinkList *list, void *data);
+int CLinkList_pushBack(struct CLinkList *list, void *data);
 
 void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *data));
 
