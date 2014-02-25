@@ -1,5 +1,8 @@
 #define DEBUG_CLINKLIST
 
+#ifndef cLinkList_h
+#define cLinkList_h
+
 struct CLink{
 	struct CLink *previous;
 	struct CLink *next;
@@ -24,4 +27,6 @@ void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *dat
 
 #ifdef DEBUG_CLINKLIST
 void CLinkList_printLink(struct CLinkList *list, void (*printFun)(void *data));
+#endif
+
 #endif
