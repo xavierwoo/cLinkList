@@ -9,18 +9,22 @@ void pF(void *d){
 int main(int argc, char *argv[]){
 
     struct CLinkList *l=NULL;
-    
+    struct CLink *cl = NULL;
     int *p;
     int i;
-    
+
     l = CLinkList_newList();
     
     for (i=0; i<5; i++) {
         p = (int *)malloc(sizeof(int));
         *p = i;
         
-        CLinkList_insertFront(l, p);
+        CLinkList_pushFront(l, p);
+    
     }
+    cl = l->head;
+    
+    CLinkList_delete(cl, free);
     
     CLinkList_printLink(l, pF);
     
