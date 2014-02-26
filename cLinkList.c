@@ -3,8 +3,11 @@
 #include "cLinkList.h"
 
 
+int (*g_cmpFun)(const void *a, const void *b) = NULL;;
+
+
 #ifdef DEBUG_CLINKLIST
-void CLinkList_printLink(struct CLinkList *list, void (*printFun)(void *data)){
+void CLinkList_printLink(struct CLinkList *list, void (*printFun)(const void *data)){
     struct CLink *pL = NULL;
     unsigned int i = 0;
     
@@ -13,9 +16,9 @@ void CLinkList_printLink(struct CLinkList *list, void (*printFun)(void *data)){
     }
     
     pL = list->head;
-    
+    printf("List :\n");
     while (pL != NULL) {
-        printf("NO.%u:\n ", i++);
+        printf(" NO.%u:\n  ", i++);
         printFun(pL->data);
         printf("\n");
         pL = pL->next;
@@ -74,6 +77,8 @@ void CLinkList_delete(struct CLink *link, void (*destruction)(void *data)){
         link->previous->next = link->next;
         link->next->previous = link->previous;
     }
+    
+    l->length--;
     
     destruction(link->data);
     free(link);
@@ -164,4 +169,58 @@ void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *dat
         pL = pNL;
     }
     free(list);
+}
+
+//***********************************************************************//
+// This function is written for CLinkList_sort                           //
+// It uses the global pointer g_cmpFun                                   //
+//***********************************************************************//
+int cmpForSort(const void *a, const void *b){
+    struct CLink **lA = NULL;
+    struct CLink **lB = NULL;
+    
+    lA = (struct CLink**)a;
+    lB = (struct CLink**)b;
+    
+    return g_cmpFun((*lA)->data, (*lB)->data);
+}
+
+void CLinkList_sort(struct CLinkList *list, int (*compare)(const void *a, const void *b)){
+    struct CLink **array = NULL;
+    struct CLink *pL = NULL;
+    int i;
+    
+    if (list == NULL || list->length <= 1) return;
+    
+    array = (struct CLink **)malloc(list->length * sizeof(struct CLink **));
+    
+    pL = list->head;
+    
+    for (i = 0; pL != NULL; i++, pL = pL->next) {
+        array[i] = pL;
+    }
+    
+    if (g_cmpFun != NULL) {
+        printf("WARNING: The pointer g_cmpFun was occupied some where!\n");
+    }
+    g_cmpFun = compare;
+    qsort(array, list->length, sizeof(struct CLink*), cmpForSort);
+    g_cmpFun = NULL;
+
+    pL = array[0];
+    
+    list->head = pL;
+    pL->previous = NULL;
+    
+    for (i = 1; i < list->length; i++) {
+        pL = array[i];
+        
+        pL->previous = array[i-1];
+        array[i-1]->next = pL;
+    }
+    
+    pL->next = NULL;
+    list->tail = pL;
+    
+    free(array);
 }

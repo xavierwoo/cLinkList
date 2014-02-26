@@ -2,8 +2,18 @@
 #include <stdlib.h>
 #include "cLinkList.h"
 
-void pF(void *d){
+void pF(const void *d){
     printf("%d\n", *(int *)d);
+}
+
+int compar (const void *a ,const void *b)
+{
+
+    int *aa=(int * ) a,*bb = (int * )b;
+    if( * aa >* bb)return 1;
+    else if( * aa == * bb) return 0;
+    else return -1;
+    
 }
 
 int main(int argc, char *argv[]){
@@ -15,7 +25,7 @@ int main(int argc, char *argv[]){
 
     l = CLinkList_newList();
     
-    for (i=0; i<5; i++) {
+    for (i=0; i<20; i++) {
         p = (int *)malloc(sizeof(int));
         *p = i;
         
@@ -25,6 +35,10 @@ int main(int argc, char *argv[]){
     cl = l->head;
     
     CLinkList_delete(cl, free);
+    
+    CLinkList_printLink(l, pF);
+    
+    CLinkList_sort(l, compar);
     
     CLinkList_printLink(l, pF);
     
