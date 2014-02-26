@@ -1,7 +1,7 @@
-#define DEBUG_CLINKLIST
-
 #ifndef cLinkList_h
 #define cLinkList_h
+
+#define DEBUG_CLINKLIST
 
 struct CLink{
 	struct CLink *previous;
