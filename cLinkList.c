@@ -80,7 +80,9 @@ void CLinkList_delete(struct CLink *link, void (*destruction)(void *data)){
     
     l->length--;
     
-    destruction(link->data);
+    if (destruction != NULL) {
+        destruction(link->data);
+    }
     free(link);
 }
 
@@ -162,7 +164,9 @@ void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *dat
     pL = list->head;
     
     while (pL != NULL) {
-        destruction(pL->data);
+        if (destruction != NULL) {
+            destruction(pL->data);
+        }
         
         pNL = pL->next;
         free(pL);
