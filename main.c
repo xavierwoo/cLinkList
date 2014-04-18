@@ -47,6 +47,8 @@ int main(int argc, char *argv[]){
     
     CLinkList_printLink(l, pF);
     
+    printf("print the %dth element: %d", 5, *(int*)CLinkList_at(l ,5));
+    
     //The list should be destroyed after use, otherwise there will be memory leaks.
     CLinkList_destroyLink(l, free);
     
