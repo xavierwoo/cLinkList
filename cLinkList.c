@@ -3,10 +3,8 @@
 #include "cLinkList.h"
 
 
-int (*g_cmpFun)(const void *a, const void *b) = NULL;;
+int (*g_cmpFun)(const void *a, const void *b) = NULL;
 
-
-#ifdef DEBUG_CLINKLIST
 void CLinkList_printLink(struct CLinkList *list, void (*printFun)(const void *data)){
     struct CLink *pL = NULL;
     unsigned int i = 0;
@@ -25,7 +23,22 @@ void CLinkList_printLink(struct CLinkList *list, void (*printFun)(const void *da
     }
     
 }
-#endif
+
+
+void *CLinkList_at(struct CLinkList *list, int i){
+    struct CLink *pL = NULL;
+    int count = 0;
+    if (list == NULL) return NULL;
+    
+    pL = list->head;
+    
+    for(count=0; count<i; count++){
+        pL = pL->next;
+        if(pL == NULL) return NULL;
+    }
+    
+    return pL->data;
+}
 
 struct CLinkList *CLinkList_newList(){
     struct CLinkList *newList = NULL;

@@ -1,8 +1,6 @@
 #ifndef cLinkList_h
 #define cLinkList_h
 
-#define DEBUG_CLINKLIST
-
 struct CLink{
 	struct CLink *previous;
 	struct CLink *next;
@@ -33,8 +31,10 @@ void CLinkList_destroyLink(struct CLinkList *list, void (*destruction)(void *dat
 
 void CLinkList_sort(struct CLinkList *list, int (*compare)(const void *a, const void *b));
 
-#ifdef DEBUG_CLINKLIST
+//return the pointer to the ith element of the list
+//return NULL if i is larger than the list size
+void *CLinkList_at(struct CLinkList *list, int i);
+
 void CLinkList_printLink(struct CLinkList *list, void (*printFun)(const void *data));
-#endif
 
 #endif
